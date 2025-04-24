@@ -11,6 +11,7 @@ require (
 	github.com/hashicorp/go-retryablehttp v0.7.7
 	github.com/hashicorp/go-uuid v1.0.3
 	github.com/hashicorp/go-version v1.7.0
+	github.com/ms-henglu/azurerm-interceptor v0.0.0-20250424042006-78e351c500dc
 	golang.org/x/oauth2 v0.30.0
 	software.sslmate.com/src/go-pkcs12 v0.4.0
 )

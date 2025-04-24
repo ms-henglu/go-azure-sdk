@@ -27,6 +27,7 @@ import (
 	"github.com/hashicorp/go-azure-sdk/sdk/internal/accept"
 	"github.com/hashicorp/go-azure-sdk/sdk/odata"
 	"github.com/hashicorp/go-retryablehttp"
+	"github.com/ms-henglu/azurerm-interceptor/interceptor"
 )
 
 // RetryOn404ConsistencyFailureFunc can be used to retry a request when a 404 response is received
@@ -419,6 +420,24 @@ func (c *Client) Execute(ctx context.Context, req *Request) (*Response, error) {
 	if req.Request == nil {
 		return nil, fmt.Errorf("req.Request was nil")
 	}
+
+	interceptorResp, interceptorErr := interceptor.HandleRequest(req.Request)
+	if interceptorErr != nil {
+		return nil, interceptorErr
+	}
+	wrappedResponse := &Response{
+		OData:    nil,
+		Response: interceptorResp,
+	}
+
+	if interceptorResp.StatusCode != 200 {
+		responseBody, err := io.ReadAll(interceptorResp.Body)
+		if err != nil {
+			return wrappedResponse, fmt.Errorf("could not read response body: %v", err)
+		}
+		return wrappedResponse, fmt.Errorf("unexpected status %d with response: %s", interceptorResp.StatusCode, string(responseBody))
+	}
+	return wrappedResponse, nil
 
 	// Authorize the request
 	if c.AuthorizeRequest != nil {
