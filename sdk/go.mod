@@ -1,6 +1,6 @@
 module github.com/hashicorp/go-azure-sdk/sdk
 
-go 1.22
+go 1.24.1
 
 require (
 	github.com/Azure/go-autorest/autorest v0.11.29
@@ -11,6 +11,7 @@ require (
 	github.com/hashicorp/go-retryablehttp v0.7.7
 	github.com/hashicorp/go-uuid v1.0.3
 	github.com/hashicorp/go-version v1.6.0
+	github.com/ms-henglu/azurerm-interceptor v0.0.0-20250424042006-78e351c500dc
 	golang.org/x/oauth2 v0.16.0
 	software.sslmate.com/src/go-pkcs12 v0.4.0
 )
